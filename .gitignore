@@ -1,0 +1,8 @@
+# gitignore
+*.log
+*.tmp
+.env
+node_modules/
+.DS_Store
+config/secrets.json
+friends-bashrc
