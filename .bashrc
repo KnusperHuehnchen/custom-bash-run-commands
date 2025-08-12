@@ -105,3 +105,41 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
+# Function to check and configure sudo access without password
+
+check_sudo_nopasswd() {
+    local user=$(whoami)
+
+    # Check if user can run sudo without password
+    if sudo -n true 2>/dev/null; then
+        return 0
+    fi
+
+    echo "$user doesn't have passwordless sudo access. Attempting to configure..."
+
+    # Check if user is in sudo group
+    if ! groups $user | grep -q '\bsudo\b'; then
+        echo "$user is not in the sudo group. Please add the user to the sudo group first."
+        return 1
+    fi
+
+    # Backup sudoers file
+    sudo cp /etc/sudoers /etc/sudoers.bak
+
+    # Add user to sudoers file with NOPASSWD
+    echo "$user ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/$user > /dev/null
+
+    # Verify the changes
+    if sudo -n true 2>/dev/null; then
+        echo "Successfully configured passwordless sudo access for $user."
+        return 0
+    else
+        echo "Failed to configure passwordless sudo access. Reverting changes..."
+        sudo mv /etc/sudoers.bak /etc/sudoers
+        sudo rm -f /etc/sudoers.d/$user
+        return 1
+    fi
+}
+
+check_sudo_nopasswd
