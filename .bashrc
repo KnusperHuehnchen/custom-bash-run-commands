@@ -68,6 +68,9 @@ xterm*|rxvt*)
     ;;
 esac
 
+
+####### ALIASES #######
+
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
@@ -79,6 +82,28 @@ if [ -x /usr/bin/dircolors ]; then
     alias fgrep='fgrep --color=auto'
     alias egrep='egrep --color=auto'
 fi
+
+# Oh my posh
+alias omp='oh-my-posh'
+
+# Sudos
+alias sudo='sudo '
+
+# Apt and Nala
+alias apt='\nala'
+alias dapt='\apt'
+
+# ls and cd
+alias ls='lsd'
+alias lsls='\ls'
+alias ll='ls -alF'
+alias l='ls -lF'
+alias la='ls -A'
+alias lt='ls --tree'
+
+# Python
+alias venv='activate_python_venv'
+alias denv='deactivate'
 
 # some more ls aliases
 alias ll='ls -alF'
@@ -94,6 +119,10 @@ if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
+
+
+####### programmable completion #######
+
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
@@ -105,6 +134,8 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
+
 
 # Function to check and configure sudo access without password
 
@@ -143,3 +174,22 @@ check_sudo_nopasswd() {
 }
 
 check_sudo_nopasswd
+
+
+
+####### Nala #######
+
+function check_nala_installed {
+  if ! command -v nala &> /dev/null; then
+    echo "nala not installed, installing..."
+    sudo apt-get update && sudo apt-get upgrade -y
+    sudo apt-get install nala -y
+  fi
+}
+
+####### fastfetch #######
+
+
+
+####### OH MY POSH #######
+
