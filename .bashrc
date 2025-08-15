@@ -176,9 +176,7 @@ function check_nala_installed {
   fi
 }
 
-####### fastfetch #######
-
-
+check_nala_installed
 
 ####### OH MY POSH #######
 
