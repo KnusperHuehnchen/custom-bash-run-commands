@@ -195,6 +195,8 @@ function check_posh_installed {
     oh-my-posh font install FiraCode
     mkdir -p ~/.posh-themes
     curl -o ~/.posh-themes/my.omp.json https://raw.githubusercontent.com/KnusperHuehnchen/custom-bash-run-commands/main/config/my.omp.json 
+  fi
+}
 
 export PATH="$PATH:/home/$USER/.local/bin"
 check_posh_installed
@@ -390,3 +392,57 @@ deactivate () {
         unset -f deactivate
     fi
 }
+
+####### VSCODE #######
+
+function check_vscode_installed {
+    if ! command -v code &> /dev/null; then
+        echo "VS Code not found in PATH"
+        echo "Install with:"
+        echo "  wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg"
+        echo "  sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/"
+        echo "  echo 'deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main' > /etc/apt/sources.list.d/vscode.list"
+        echo "  sudo apt update && sudo apt install code"
+        return 1
+    fi
+    echo "VS Code is available: $(which code)"
+}
+
+function gitclone() { git clone "$1" && cd "$(basename "$_" .git)" || return; }
+
+# ...existing code...
+
+####### FASTFETCH #######
+
+function check_fastfetch_installed {
+    if ! command -v fastfetch &> /dev/null; then
+        echo "fastfetch not installed, installing..."
+        
+        # Detect architecture
+        local arch=$(uname -m)
+        case $arch in
+            x86_64) arch="amd64" ;;
+            aarch64) arch="aarch64" ;;
+            armv6l) arch="armv6l" ;;
+            armv7l) arch="armv7l" ;;
+            *) echo "Unsupported architecture: $arch"; return 1 ;;
+        esac
+        
+        # Download and install
+        local version="2.49.0"
+        local url="https://github.com/fastfetch-cli/fastfetch/releases/download/${version}/fastfetch-linux-${arch}.deb"
+        
+        wget "$url" -O /tmp/fastfetch.deb
+        sudo dpkg -i /tmp/fastfetch.deb
+        rm /tmp/fastfetch.deb
+        
+        echo "fastfetch installed successfully!"
+    fi
+}
+
+check_fastfetch_installed
+
+####### TERMINAL START #######
+if command -v fastfetch &> /dev/null; then
+    fastfetch
+fi
