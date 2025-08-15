@@ -193,3 +193,26 @@ function check_nala_installed {
 
 ####### OH MY POSH #######
 
+function check_posh_installed {
+  if ! command -v oh-my-posh &> /dev/null; then
+    if ! command -v unzip &> /dev/null; then
+        sudo apt-get install unzip -y
+    fi
+	if ! command -v curl &> /dev/null; then
+        sudo apt-get install curl -y
+    fi
+    echo "oh-my-posh not installed, installing..."
+    curl -s https://ohmyposh.dev/install.sh | bash -s
+    oh-my-posh font install FiraCode
+    mkdir -p ~/.posh-themes
+    curl -o ~/.posh-themes/my.omp.json https://raw.githubusercontent.com/path/to/config/my.omp.json
+  fi
+}
+
+export PATH="$PATH:/home/$USER/.local/bin"
+check_posh_installed
+
+# Initialize oh-my-posh if installed
+if command -v oh-my-posh &> /dev/null; then
+  eval "$(oh-my-posh init bash --config ~/.posh-themes/my.omp.json)"
+fi
