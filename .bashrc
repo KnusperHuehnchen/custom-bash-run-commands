@@ -68,52 +68,6 @@ xterm*|rxvt*)
     ;;
 esac
 
-
-####### ALIASES #######
-
-# enable color support of ls and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
-    #alias dir='dir --color=auto'
-    #alias vdir='vdir --color=auto'
-
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
-fi
-
-# Oh my posh
-alias omp='oh-my-posh'
-
-# Sudos
-alias sudo='sudo '
-
-# Apt and Nala
-alias apt='\nala'
-alias dapt='\apt'
-
-# ls and cd
-alias ls='lsd'
-alias lsls='\ls'
-alias ll='ls -alF'
-alias l='ls -lF'
-alias la='ls -A'
-alias lt='ls --tree'
-
-# Python
-alias venv='activate_python_venv'
-alias denv='deactivate'
-
-# Alias definitions.
-# You may want to put all your additions into a separate file like
-# ~/.bash_aliases, instead of adding them here directly.
-# See /usr/share/doc/bash-doc/examples in the bash-doc package.
-
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
-fi
-
 ####### programmable completion #######
 
 # enable programmable completion features (you don't need to enable
@@ -391,24 +345,50 @@ deactivate () {
     fi
 }
 
-####### VSCODE #######
+####### ALIASES #######
 
-function check_vscode_installed {
-    if ! command -v code &> /dev/null; then
-        echo "VS Code not found in PATH"
-        echo "Install with:"
-        echo "  wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg"
-        echo "  sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/"
-        echo "  echo 'deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main' > /etc/apt/sources.list.d/vscode.list"
-        echo "  sudo apt update && sudo apt install code"
-        return 1
-    fi
-    echo "VS Code is available: $(which code)"
-}
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    #alias dir='dir --color=auto'
+    #alias vdir='vdir --color=auto'
 
-function gitclone() { git clone "$1" && cd "$(basename "$_" .git)" || return; }
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
 
-# ...existing code...
+# Oh my posh
+alias omp='oh-my-posh'
+
+# Sudos
+alias sudo='sudo '
+
+# Apt and Nala
+alias apt='\nala'
+alias dapt='\apt'
+
+# ls and cd
+alias ls='lsd'
+alias lsls='\ls'
+alias ll='ls -alF'
+alias l='ls -lF'
+alias la='ls -A'
+alias lt='ls --tree'
+
+# Python
+alias venv='activate_python_venv'
+alias denv='deactivate'
+
+# Alias definitions.
+# You may want to put all your additions into a separate file like
+# ~/.bash_aliases, instead of adding them here directly.
+# See /usr/share/doc/bash-doc/examples in the bash-doc package.
+
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
 
 ####### FASTFETCH #######
 
@@ -439,6 +419,23 @@ function check_fastfetch_installed {
 }
 
 check_fastfetch_installed
+
+####### VSCODE #######
+
+function check_vscode_installed {
+    if ! command -v code &> /dev/null; then
+        echo "VS Code not found in PATH"
+        echo "Install with:"
+        echo "  wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg"
+        echo "  sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/"
+        echo "  echo 'deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main' > /etc/apt/sources.list.d/vscode.list"
+        echo "  sudo apt update && sudo apt install code"
+        return 1
+    fi
+    echo "VS Code is available: $(which code)"
+}
+
+function gitclone() { git clone "$1" && cd "$(basename "$_" .git)" || return; }
 
 ####### TERMINAL START #######
 if command -v fastfetch &> /dev/null; then
