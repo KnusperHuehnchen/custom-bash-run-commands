@@ -153,11 +153,6 @@ function check_posh_installed {
 export PATH="$PATH:/home/$USER/.local/bin"
 check_posh_installed
 
-# Initialize oh-my-posh if installed
-if command -v oh-my-posh &> /dev/null; then
-  eval "$(oh-my-posh init bash --config ~/.posh-themes/my.omp.json)"
-fi
-
 ####### LSD #######
 
 function update_lsd_config {
@@ -440,4 +435,8 @@ function gitclone() { git clone "$1" && cd "$(basename "$_" .git)" || return; }
 ####### TERMINAL START #######
 if command -v fastfetch &> /dev/null; then
     fastfetch
+fi
+
+if command -v oh-my-posh &> /dev/null; then
+    eval "$(oh-my-posh init bash --config ~/.posh-themes/my.omp.json)"
 fi
