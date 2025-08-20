@@ -132,6 +132,36 @@ function check_nala_installed {
 
 check_nala_installed
 
+####### FASTFETCH #######
+
+function check_fastfetch_installed {
+    if ! command -v fastfetch &> /dev/null; then
+        echo "fastfetch not installed, installing..."
+
+        # Detect architecture
+        local arch=$(uname -m)
+        case $arch in
+            x86_64) arch="amd64" ;;
+            aarch64) arch="aarch64" ;;
+            armv6l) arch="armv6l" ;;
+            armv7l) arch="armv7l" ;;
+            *) echo "Unsupported architecture: $arch"; return 1 ;;
+        esac
+
+        # Download and install
+        local version="2.49.0"
+        local url="https://github.com/fastfetch-cli/fastfetch/releases/download/${version}/fastfetch-linux-${arch}.deb"
+
+        wget "$url" -O /tmp/fastfetch.deb
+        sudo dpkg -i /tmp/fastfetch.deb
+        rm /tmp/fastfetch.deb
+
+        echo "fastfetch installed successfully!"
+    fi
+}
+
+check_fastfetch_installed
+
 ####### OH MY POSH #######
 
 function check_posh_installed {
@@ -146,7 +176,7 @@ function check_posh_installed {
     curl -s https://ohmyposh.dev/install.sh | bash -s
     oh-my-posh font install FiraCode
     mkdir -p ~/.posh-themes
-    curl -o ~/.posh-themes/my.omp.json https://raw.githubusercontent.com/KnusperHuehnchen/custom-bash-run-commands/main/config/my.omp.json 
+    curl -o ~/.posh-themes/my.omp.json https://raw.githubusercontent.com/KnusperHuehnchen/custom-bash-run-commands/main/config/my.omp.json
   fi
 }
 
@@ -384,36 +414,6 @@ alias denv='deactivate'
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
-
-####### FASTFETCH #######
-
-function check_fastfetch_installed {
-    if ! command -v fastfetch &> /dev/null; then
-        echo "fastfetch not installed, installing..."
-        
-        # Detect architecture
-        local arch=$(uname -m)
-        case $arch in
-            x86_64) arch="amd64" ;;
-            aarch64) arch="aarch64" ;;
-            armv6l) arch="armv6l" ;;
-            armv7l) arch="armv7l" ;;
-            *) echo "Unsupported architecture: $arch"; return 1 ;;
-        esac
-        
-        # Download and install
-        local version="2.49.0"
-        local url="https://github.com/fastfetch-cli/fastfetch/releases/download/${version}/fastfetch-linux-${arch}.deb"
-        
-        wget "$url" -O /tmp/fastfetch.deb
-        sudo dpkg -i /tmp/fastfetch.deb
-        rm /tmp/fastfetch.deb
-        
-        echo "fastfetch installed successfully!"
-    fi
-}
-
-check_fastfetch_installed
 
 ####### VSCODE #######
 
