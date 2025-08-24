@@ -7,3 +7,4 @@ node_modules/
 config/secrets.json
 friends-bashrc
 draft-bashrc
+friends.omp.json

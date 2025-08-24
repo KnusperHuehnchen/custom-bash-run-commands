@@ -27,7 +27,7 @@ shopt -s checkwinsize
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 # set variable identifying the chroot you work in (used in the prompt below)
-if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
+if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
 fi
 
@@ -73,7 +73,6 @@ esac
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
-
 if ! shopt -oq posix; then
   if [ -f /usr/share/bash-completion/bash_completion ]; then
     . /usr/share/bash-completion/bash_completion
@@ -177,6 +176,12 @@ function check_posh_installed {
     oh-my-posh font install FiraCode
     mkdir -p ~/.posh-themes
     curl -o ~/.posh-themes/my.omp.json https://raw.githubusercontent.com/KnusperHuehnchen/custom-bash-run-commands/main/config/my.omp.json
+    curl -o ~/.posh-themes/kushal.omp.json https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/refs/heads/main/themes/kushal.omp.json
+    curl -o ~/.posh-themes/quick-term.omp.json https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/refs/heads/main/themes/quick-term.omp.json
+    curl -o ~/.posh-themes/blueish.omp.json https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/refs/heads/main/themes/blueish.omp.json
+    curl -o ~/.posh-themes/lambdageneration.omp.json https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/refs/heads/main/themes/lambdageneration.omp.json
+    curl -o ~/.posh-themes/microverse-power.omp.json https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/refs/heads/main/themes/microverse-power.omp.json
+    curl -o ~/.posh-themes/powerlevel10k_rainbow.omp.json https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/refs/heads/main/themes/powerlevel10k_rainbow.omp.json
   fi
 }
 
@@ -414,7 +419,6 @@ alias denv='deactivate'
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
-
 ####### VSCODE #######
 
 function check_vscode_installed {
@@ -436,7 +440,7 @@ function gitclone() { git clone "$1" && cd "$(basename "$_" .git)" || return; }
 if command -v fastfetch &> /dev/null; then
     fastfetch
 fi
-
+# check .posh-themes/
 if command -v oh-my-posh &> /dev/null; then
     eval "$(oh-my-posh init bash --config ~/.posh-themes/my.omp.json)"
 fi
